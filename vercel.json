@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "routes": [
-    { "src": "/didi", "methods": ["POST"], "dest": "/api/index.js" }
+  "builds": [
+    { "src": "api/index.js", "use": "@vercel/node" }
   ]
 }
