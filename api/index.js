@@ -26,3 +26,25 @@ export default async function handler(req, res) {
     res.status(500).json({ erro: "Proxy falhou", detalhe: err.message });
   }
 }
+
+export default async function handler(req, res) {
+  await runCors(req, res);
+
+  if (req.method === 'GET') {
+    return res.status(200).json({ status: 'Proxy ativo 🚀' });
+  }
+
+  try {
+    const response = await fetch('https://rafahotmail.app.n8n.cloud/webhook/didi', {
+      method: req.method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body),
+    });
+
+    const data = await response.json();
+    res.status(200).json(data);
+
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao conectar com o Didi', details: error.message });
+  }
+}
