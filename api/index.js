@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   // POST para enviar ao n8n
   if (req.method === 'POST') {
     try {
-      const response = await fetch('https://rafahotmail.app.n8n.cloud/webhook-test/didi', {
+      const response = await fetch('https://rafahotmail.app.n8n.cloud/webhook/didi', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
