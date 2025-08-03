@@ -32,8 +32,15 @@ export default async function handler(req, res) {
         body: JSON.stringify(req.body),
       });
 
-      const data = await response.json();
-      return res.status(200).json(data);
+      const text = await response.text();
+
+try {
+  const json = JSON.parse(text);
+  return res.status(200).json(json);
+} catch (e) {
+  return res.status(200).json({ resposta: text });
+}
+
     } catch (error) {
       console.error("Erro ao conectar com o n8n:", error);
       return res.status(500).json({
