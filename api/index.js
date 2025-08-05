@@ -1,7 +1,7 @@
 import Cors from 'cors';
 import fetch from 'node-fetch';
 
-// Inicializa CORS
+// Inicializa o middleware CORS com origem dinâmica
 const cors = Cors({ origin: true });
 
 function runCors(req, res) {
@@ -16,12 +16,22 @@ function runCors(req, res) {
 export default async function handler(req, res) {
   await runCors(req, res);
 
+  // Cabeçalhos de CORS manualmente definidos
+  res.setHeader("Access-Control-Allow-Origin", "*"); // ou especifique: "https://www.agent-ai.com.br"
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // Responde imediatamente a requisições OPTIONS (preflight)
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   // Rota GET para teste
   if (req.method === 'GET') {
     return res.status(200).json({ status: 'Proxy ativo 💬' });
   }
 
-  // POST para enviar ao n8n
+  // Rota POST: proxy para o webhook do n8n
   if (req.method === 'POST') {
     try {
       const response = await fetch('https://rafahotmail.app.n8n.cloud/webhook-test/didi', {
@@ -34,12 +44,12 @@ export default async function handler(req, res) {
 
       const text = await response.text();
 
-try {
-  const json = JSON.parse(text);
-  return res.status(200).json(json);
-} catch (e) {
-  return res.status(200).json({ resposta: text });
-}
+      try {
+        const json = JSON.parse(text);
+        return res.status(200).json(json);
+      } catch (e) {
+        return res.status(200).json({ resposta: text });
+      }
 
     } catch (error) {
       console.error("Erro ao conectar com o n8n:", error);
