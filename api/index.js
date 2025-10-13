@@ -34,7 +34,7 @@ export default async function handler(req, res) {
   // Rota POST: proxy para o webhook do n8n
   if (req.method === 'POST') {
     try {
-      const response = await fetch('https://rafahotmail.app.n8n.cloud/webhook-test/didi', {
+      const response = await fetch('https://workflows-mvp.agent-ai.com.br/webhook-test/livechat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
