@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         message: body.message ?? body.mensagem
       };
 
-      const upstream = await fetch("https://workflows-mvp.agent-ai.com.br/webhook-test/livechat", {
+      const upstream = await fetch("https://workflows-mvp.agent-ai.com.br/webhook/livechat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(forwarded)
